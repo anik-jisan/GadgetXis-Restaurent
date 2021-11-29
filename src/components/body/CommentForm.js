@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Form, Button, Input } from 'reactstrap';
+import { connect } from 'react-redux';
 
 class CommentForm extends Component {
     constructor(props) {
@@ -9,6 +10,7 @@ class CommentForm extends Component {
             rating: '',
             comment: ''
         }
+
         this.handleInputChange = this.handleInputChange.bind(this);
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,6 +24,15 @@ class CommentForm extends Component {
 
     handleSubmit = event => {
         console.log(this.state);
+        this.props.dispatch({
+            type: 'ADD_COMMENT',
+            payload: {
+                dishId: this.props.dishId,
+                author: this.state.author,
+                rating: this.state.rating,
+                comment: this.state.comment
+            }
+        })
         this.setState({
             author: '',
             rating: '',
@@ -45,8 +56,8 @@ class CommentForm extends Component {
 
                     <Input type="select"
                         name="rating"
-                        value={this.state.rating}>
-                        onChange={this.handleInputChange}
+                        value={this.state.rating}
+                        onChange={this.handleInputChange}>
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -73,4 +84,4 @@ class CommentForm extends Component {
     }
 }
 
-export default CommentForm;
+export default connect()(CommentForm);
